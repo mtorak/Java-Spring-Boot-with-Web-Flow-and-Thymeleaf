@@ -15,9 +15,12 @@ import org.springframework.webflow.mvc.builder.MvcViewFactoryCreator;
 import org.springframework.webflow.mvc.servlet.FlowHandlerAdapter;
 import org.springframework.webflow.mvc.servlet.FlowHandlerMapping;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.webflow.view.AjaxThymeleafViewResolver;
 import org.thymeleaf.spring5.webflow.view.FlowAjaxThymeleafView;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 public class WebFlowWithMvcConfig extends AbstractFlowConfiguration {
@@ -84,11 +87,14 @@ public class WebFlowWithMvcConfig extends AbstractFlowConfiguration {
 
   @Bean
   @Description("Thymeleaf template resolver serving HTML 5")
-  public FileTemplateResolver templateResolver() {
-//    ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+  public ITemplateResolver templateResolver() {
 
-    FileTemplateResolver templateResolver = new FileTemplateResolver();
-    templateResolver.setPrefix("/templates/");
+    //    ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+    //    templateResolver.setPrefix("classpath:templates/");
+
+    SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+    templateResolver.setPrefix("file:src/main/resources/templates/");
+
     templateResolver.setCacheable(false);
     templateResolver.setSuffix(".html");
     templateResolver.setTemplateMode("HTML5");
